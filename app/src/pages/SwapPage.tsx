@@ -2,8 +2,9 @@ import { useEffect, useMemo, useState } from 'react'
 import { useAppState } from '../state/appState'
 import { useWallet } from '../hooks/useWallet'
 import { Contract, parseEther } from 'ethers'
-import { MONAD_ADDRESSES, DEFAULT_RPC } from '../lib/monad'
+import { MONAD_ADDRESSES } from '../lib/monad'
 import { UniswapV2FactoryABI, UniswapV2Router02ABI } from '../lib/abi'
+import { kuruQuote, kuruSwapTx } from '../services/kuru'
 
 export default function SwapPage() {
   const { selectedSymbol } = useAppState()
@@ -29,9 +30,15 @@ export default function SwapPage() {
   }
 
   async function handleGetQuote() {
-    // Monad-native quote via router getAmountsOut
     const amountIn = parseEther(sellAmount || '0')
-    if (amountIn === 0n) { setQuote(''); return }
+    if (amountIn === 0n || !address) { setQuote(''); return }
+    // Try Kuru quote first
+    try {
+      const q = await kuruQuote({ chainId: 10143, sellToken: MONAD_ADDRESSES.WMON, buyToken: buyToken, amount: amountIn.toString(), taker: address })
+      setQuote(`Kuru price: ${q.price}, buyAmount: ${q.buyAmount}`)
+      return
+    } catch {}
+    // Fallback to router
     const router = new Contract(routerAddress, UniswapV2Router02ABI, signer ?? undefined)
     const path = await resolveBestPath()
     const amounts: bigint[] = await router.getAmountsOut(amountIn, path)
@@ -54,12 +61,20 @@ export default function SwapPage() {
         <button onClick={handleGetQuote} disabled={!isConnected} className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium hover:bg-emerald-500 disabled:opacity-50">Get Quote (Monad)</button>
         <button onClick={async () => {
           if (!address || !isConnected) return
-          // Monad-native swap via UniswapV2Router02: WMON -> buyToken path
+          const value = parseEther(sellAmount || '0')
+          try {
+            const txReq = await kuruSwapTx({ chainId: 10143, sellToken: MONAD_ADDRESSES.WMON, buyToken, amount: value.toString(), taker: address, slippageBps: 100 })
+            if (!signer) return
+            const tx = await signer.sendTransaction({ to: txReq.to, data: txReq.data, value: BigInt(txReq.value || '0') })
+            await tx.wait()
+            alert(`Swap confirmed: ${tx.hash}`)
+            return
+          } catch {}
+          // Fallback: direct router
           if (!signer) return
           const router = new Contract(routerAddress, UniswapV2Router02ABI, signer)
           const deadline = Math.floor(Date.now() / 1000) + 60 * 10
           const path = await resolveBestPath()
-          const value = parseEther(sellAmount || '0')
           const tx = await router.swapExactETHForTokens(0n, path, address, deadline, { value })
           await tx.wait()
           alert(`Swap confirmed: ${tx.hash}`)

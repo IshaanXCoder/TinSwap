@@ -2,18 +2,24 @@ import { useNavigate } from 'react-router-dom'
 import { SwipeCard } from '../components/SwipeCard'
 import { Card, CardContent, CardHeader } from '../components/ui/Card'
 import { useAppState } from '../state/appState'
+import { useEffect, useState } from 'react'
 
 export default function SwipePage() {
   const { matches, setSelectedSymbol } = useAppState()
   const navigate = useNavigate()
+  const [deck, setDeck] = useState(matches ?? [])
 
-  if (!matches || matches.length === 0) {
+  useEffect(() => {
+    if (matches) setDeck(matches)
+  }, [matches])
+
+  if (!deck || deck.length === 0) {
     return <div className="text-sm text-neutral-400">Take the quiz first to see compatible pools.</div>
   }
 
   return (
     <div className="relative mx-auto h-[calc(100vh-220px)] max-w-3xl">
-      {[...matches].reverse().map((m, idx) => (
+      {[...deck].reverse().map((m, idx) => (
         <div key={m.symbol} style={{ zIndex: idx + 1 }} className="absolute inset-0">
           <SwipeCard
             onSwipe={(dir) => {
@@ -21,7 +27,9 @@ export default function SwipePage() {
                 setSelectedSymbol(m.symbol)
                 navigate('/swap')
               }
-              // left swipe: reject/no-op for now
+              if (dir === 'left') {
+                setDeck((prev) => prev.filter((x) => x.symbol !== m.symbol))
+              }
             }}
           >
             <div className="flex h-full flex-col">
