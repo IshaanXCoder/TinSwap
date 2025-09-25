@@ -22,12 +22,14 @@ export async function fetchZeroExQuote(params: {
   chainId?: number
 }): Promise<ZeroExQuote> {
   const { sellToken, buyToken, sellAmount, takerAddress, apiKey, chainId } = params
-  const base = resolveZeroExBaseUrl(chainId ?? 1)
+  const base = getZeroExBaseUrl(chainId)
+  // Use simple quote endpoint to avoid CORS issues
   const url = new URL(`${base}/swap/v1/quote`)
   url.searchParams.set('sellToken', sellToken)
   url.searchParams.set('buyToken', buyToken)
   url.searchParams.set('sellAmount', sellAmount)
   url.searchParams.set('takerAddress', takerAddress)
+  if (chainId) url.searchParams.set('chainId', String(chainId))
 
   const headers: Record<string, string> = { 'accept': 'application/json' }
   const key = apiKey || import.meta.env.VITE_ZEROEX_API_KEY
@@ -41,21 +43,13 @@ export async function fetchZeroExQuote(params: {
   return (await res.json()) as ZeroExQuote
 }
 
-function resolveZeroExBaseUrl(chainId: number): string {
-  switch (chainId) {
-    case 1:
-      return 'https://api.0x.org'
-    case 137:
-      return 'https://polygon.api.0x.org'
-    case 42161:
-      return 'https://arbitrum.api.0x.org'
-    case 10:
-      return 'https://optimism.api.0x.org'
-    case 8453:
-      return 'https://base.api.0x.org'
-    default:
-      return 'https://api.0x.org'
-  }
+function getZeroExBaseUrl(chainId?: number): string {
+  // Allow override via env for Monad testnet deployments.
+  const override = import.meta.env.VITE_ZEROEX_BASE
+  if (override) return override as string
+  // Fallbacks for common chains; Monad testnet expected via override like https://swap-api.monad.xyz
+  if (!chainId) return 'https://api.0x.org'
+  return 'https://api.0x.org'
 }
 
 

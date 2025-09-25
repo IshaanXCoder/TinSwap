@@ -1,6 +1,6 @@
 import './App.css'
 import { useState } from 'react'
-import { useWallet } from './hooks/useWallet'
+import { useWalletContext } from './context/WalletContext'
 import { Link, Outlet } from 'react-router-dom'
 import { Quiz } from './features/compatibility/Quiz'
 import { scoreTokens, userVectorFromAnswers, type QuizAnswer } from './features/compatibility/data'
@@ -31,7 +31,7 @@ function Nav() {
 }
 
 function App() {
-  const { isConnected, address, isConnecting, connect, disconnect, signer, switchNetwork } = useWallet()
+  const { isConnected, address, isConnecting, connect, disconnect, signer, switchNetwork } = useWalletContext()
   const [matches, setMatches] = useState<{ symbol: string; scorePct: number; bio: string; liquidity: string; feeBps: number }[] | null>(null)
 
   function handleQuizDone(a: QuizAnswer) {

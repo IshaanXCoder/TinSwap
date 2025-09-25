@@ -2,6 +2,11 @@ export type QuizAnswer = {
   risk: 'low' | 'medium' | 'high'
   horizon: 'short' | 'medium' | 'long'
   vibe: 'serious' | 'balanced' | 'degen'
+  // Optional UI-driven extras
+  sector?: 'memes' | 'bluechips' | 'stables' | 'narratives'
+  volatility?: 'low' | 'medium' | 'high'
+  frequency?: 'scalp' | 'swing' | 'position'
+  chainPref?: 'monad' | 'eth' | 'alt'
 }
 
 export type TokenProfile = {
@@ -101,38 +106,111 @@ export type DiscreteToken = {
   }
 }
 
+// Update swipe cards to supported Monad tokens so we can swap reliably
 export const DISCRETE_TOKENS: DiscreteToken[] = [
-  { symbol: 'DUMP', name: "Anago's Dump", weights: { risk: { low: 5, medium: 20, high: 75 }, horizon: { short: 70, medium: 25, long: 5 }, vibe: { serious: 10, balanced: 15, degen: 75 } } },
-  { symbol: 'AXO', name: 'Axolotl', weights: { risk: { low: 20, medium: 50, high: 30 }, horizon: { short: 25, medium: 55, long: 20 }, vibe: { serious: 25, balanced: 55, degen: 20 } } },
-  { symbol: 'BEAN', name: 'BEANAKO', weights: { risk: { low: 15, medium: 40, high: 45 }, horizon: { short: 40, medium: 40, long: 20 }, vibe: { serious: 20, balanced: 40, degen: 40 } } },
-  { symbol: 'BEANX', name: 'Bean Exchange', weights: { risk: { low: 30, medium: 50, high: 20 }, horizon: { short: 20, medium: 50, long: 30 }, vibe: { serious: 35, balanced: 45, degen: 20 } } },
-  { symbol: 'BB', name: 'Blue Balls', weights: { risk: { low: 5, medium: 20, high: 75 }, horizon: { short: 80, medium: 15, long: 5 }, vibe: { serious: 5, balanced: 20, degen: 75 } } },
-  { symbol: 'CHOG', name: 'CHOG', weights: { risk: { low: 10, medium: 40, high: 50 }, horizon: { short: 50, medium: 35, long: 15 }, vibe: { serious: 15, balanced: 35, degen: 50 } } },
-  { symbol: 'Q', name: 'CLOB my quant', weights: { risk: { low: 40, medium: 45, high: 15 }, horizon: { short: 15, medium: 50, long: 35 }, vibe: { serious: 50, balanced: 40, degen: 10 } } },
-  { symbol: 'CHAD', name: 'Clob Chad', weights: { risk: { low: 10, medium: 30, high: 60 }, horizon: { short: 60, medium: 30, long: 10 }, vibe: { serious: 10, balanced: 30, degen: 60 } } },
-  { symbol: 'DAK', name: 'DAK', weights: { risk: { low: 20, medium: 50, high: 30 }, horizon: { short: 25, medium: 55, long: 20 }, vibe: { serious: 25, balanced: 55, degen: 20 } } },
-  { symbol: 'MELO', name: 'DOG CARAMELO', weights: { risk: { low: 10, medium: 35, high: 55 }, horizon: { short: 55, medium: 35, long: 10 }, vibe: { serious: 15, balanced: 30, degen: 55 } } },
-  { symbol: 'FLORIDA', name: 'FLORIDA', weights: { risk: { low: 15, medium: 35, high: 50 }, horizon: { short: 45, medium: 40, long: 15 }, vibe: { serious: 15, balanced: 35, degen: 50 } } },
-  { symbol: 'FIABTC', name: 'Fiamma BTC', weights: { risk: { low: 35, medium: 45, high: 20 }, horizon: { short: 20, medium: 45, long: 35 }, vibe: { serious: 40, balanced: 45, degen: 15 } } },
-  { symbol: 'JML', name: 'JUMAPEL', weights: { risk: { low: 15, medium: 45, high: 40 }, horizon: { short: 40, medium: 45, long: 15 }, vibe: { serious: 20, balanced: 45, degen: 35 } } },
-  { symbol: 'JERRY', name: 'JERRY', weights: { risk: { low: 10, medium: 35, high: 55 }, horizon: { short: 55, medium: 35, long: 10 }, vibe: { serious: 15, balanced: 30, degen: 55 } } },
-  { symbol: 'sMON', name: 'Kintsu Staked Monad', weights: { risk: { low: 50, medium: 40, high: 10 }, horizon: { short: 10, medium: 40, long: 50 }, vibe: { serious: 55, balanced: 35, degen: 10 } } },
-  { symbol: 'KIWIF', name: 'Kiwi Wif Hat', weights: { risk: { low: 5, medium: 25, high: 70 }, horizon: { short: 70, medium: 25, long: 5 }, vibe: { serious: 5, balanced: 25, degen: 70 } } },
-  { symbol: 'KB', name: 'Kryptobaby777', weights: { risk: { low: 15, medium: 40, high: 45 }, horizon: { short: 45, medium: 40, long: 15 }, vibe: { serious: 15, balanced: 40, degen: 45 } } },
-  { symbol: 'KURT', name: 'Kurt Clobaine', weights: { risk: { low: 10, medium: 30, high: 60 }, horizon: { short: 60, medium: 30, long: 10 }, vibe: { serious: 10, balanced: 30, degen: 60 } } },
-  { symbol: 'LBTC', name: 'LBTC', weights: { risk: { low: 35, medium: 45, high: 20 }, horizon: { short: 20, medium: 45, long: 35 }, vibe: { serious: 40, balanced: 45, degen: 15 } } },
-  { symbol: 'MONKA', name: 'MONKA GIGA', weights: { risk: { low: 5, medium: 20, high: 75 }, horizon: { short: 75, medium: 20, long: 5 }, vibe: { serious: 5, balanced: 20, degen: 75 } } },
+  { symbol: 'WMON', name: 'Wrapped MON', weights: { risk: { low: 20, medium: 60, high: 20 }, horizon: { short: 20, medium: 60, long: 20 }, vibe: { serious: 30, balanced: 50, degen: 20 } } },
+  { symbol: 'WOOL', name: 'Wrapped WOOL', weights: { risk: { low: 40, medium: 50, high: 10 }, horizon: { short: 30, medium: 50, long: 20 }, vibe: { serious: 35, balanced: 50, degen: 15 } } },
+  { symbol: 'USDC', name: 'USD Coin', weights: { risk: { low: 80, medium: 20, high: 0 }, horizon: { short: 60, medium: 35, long: 5 }, vibe: { serious: 70, balanced: 30, degen: 0 } } },
+  { symbol: 'USDT', name: 'Tether USD', weights: { risk: { low: 80, medium: 20, high: 0 }, horizon: { short: 60, medium: 35, long: 5 }, vibe: { serious: 60, balanced: 35, degen: 5 } } },
+  { symbol: 'WETH', name: 'Wrapped ETH', weights: { risk: { low: 30, medium: 60, high: 10 }, horizon: { short: 20, medium: 50, long: 30 }, vibe: { serious: 50, balanced: 45, degen: 5 } } },
+  { symbol: 'WBTC', name: 'Wrapped BTC', weights: { risk: { low: 30, medium: 60, high: 10 }, horizon: { short: 15, medium: 40, long: 45 }, vibe: { serious: 60, balanced: 35, degen: 5 } } },
+  { symbol: 'WSOL', name: 'Wrapped SOL', weights: { risk: { low: 25, medium: 60, high: 15 }, horizon: { short: 25, medium: 55, long: 20 }, vibe: { serious: 40, balanced: 50, degen: 10 } } },
 ]
 
 export function scoreDiscreteTokens(a: QuizAnswer): { symbol: string; name: string; scorePct: number }[] {
-  // Simple average of the three category percentages based on user's chosen option
-  return DISCRETE_TOKENS.map((t) => {
+  // Base from risk/horizon/vibe
+  const base = DISCRETE_TOKENS.map((t) => {
     const r = t.weights.risk[a.risk]
     const h = t.weights.horizon[a.horizon]
     const v = t.weights.vibe[a.vibe]
-    const score = (r + h + v) / 3
-    return { symbol: t.symbol, name: t.name, scorePct: Math.round(score) }
-  }).sort((x, y) => y.scorePct - x.scorePct)
+    const baseScore = (r + h + v) / 3 // 0..100
+
+    // Bonuses from extra answers (lightweight heuristic)
+    let bonus = 0
+    // Sector fit
+    const sectorFit: Record<string, string[]> = {
+      memes: ['WMON', 'WOOL', 'WSOL'],
+      bluechips: ['WETH', 'WBTC'],
+      stables: ['USDC', 'USDT'],
+      narratives: ['WMON', 'WSOL', 'WETH'],
+    }
+    if (a.sector && sectorFit[a.sector]?.includes(t.symbol)) bonus += 12
+
+    // Volatility tolerance
+    const volMap: Record<string, string[]> = {
+      low: ['USDC', 'USDT'],
+      medium: ['WETH', 'WBTC', 'WOOL'],
+      high: ['WMON', 'WSOL'],
+    }
+    if (a.volatility && volMap[a.volatility]?.includes(t.symbol)) bonus += 8
+
+    // Trade frequency
+    const freqMap: Record<string, string[]> = {
+      scalp: ['WMON', 'WSOL'],
+      swing: ['WOOL', 'WETH'],
+      position: ['WBTC', 'USDC', 'USDT'],
+    }
+    if (a.frequency && freqMap[a.frequency]?.includes(t.symbol)) bonus += 6
+
+    // Chain preference: light bias to WMON if monad
+    if (a.chainPref === 'monad' && (t.symbol === 'WMON' || t.symbol === 'WOOL')) bonus += 4
+
+    const finalScore = Math.min(100, Math.round(baseScore + bonus))
+    return { symbol: t.symbol, name: t.name, scorePct: finalScore }
+  })
+
+  return base.sort((x, y) => y.scorePct - x.scorePct)
+}
+
+import { MONAD_ADDRESSES } from '../../lib/monad'
+
+export const SYMBOL_TO_ADDRESS: Record<string, string> = {
+  MON: 'MON', // native
+  WMON: MONAD_ADDRESSES.WMON,
+  WOOL: '', // TODO: provide when available
+  USDC: MONAD_ADDRESSES.USDC,
+  USDT: MONAD_ADDRESSES.USDT,
+  WETH: MONAD_ADDRESSES.WETH,
+  WBTC: MONAD_ADDRESSES.WBTC,
+  WSOL: MONAD_ADDRESSES.WSOL,
+}
+
+export const TOKEN_META: Record<string, { tagline: string; blurb?: string; gradient: string; imageUrl?: string }> = {
+  WMON: {
+    tagline: 'The mysterious new kid on the block 👀 … fast, smooth, and ready to take you places.',
+    blurb: 'Monad’s native wrapper. Low latency, high throughput vibes. Suits risk-on explorers who want speed with some structure.',
+    gradient: 'from-black via-indigo-900 to-purple-700',
+    imageUrl: '/wmon.png',
+  },
+  WOOL: {
+    tagline: 'Fluffy but don’t be fooled 🐑 — I keep it cozy while stacking gains.',
+    blurb: 'Soft exterior, sturdy core. Leans mid-volatility and comfy holds; perfect for swing dates and chill yields.',
+    gradient: 'from-rose-100 via-pink-100 to-pink-300',
+  },
+  WETH: {
+    tagline: 'Classic, reliable, and everyone’s type 😏 … but I still know how to keep it wild.',
+    blurb: 'OG blue-chip energy. Liquid, deep, and everywhere. For balanced players who still enjoy momentum.',
+    gradient: 'from-blue-900 via-slate-700 to-slate-400',
+    imageUrl: '/weth.png',
+  },
+  USDT: {
+    tagline: 'Stable in the sheets, wild in the streets 💵. Always there when you need me.',
+    blurb: 'Battle-tested stable. Park funds, rotate fast. Great when the date is risk-off but you still want options.',
+    gradient: 'from-emerald-700 via-green-600 to-lime-500',
+    imageUrl: '/usdt.png',
+  },
+  USDC: {
+    tagline: 'Clean, regulated, and drama-free 😇 … I’m the one you take home to your parents.',
+    blurb: 'Pristine and predictable. Premium stable liquidity for strategic rotations and precise sizing.',
+    gradient: 'from-sky-700 via-blue-700 to-indigo-800',
+    imageUrl: '/usdc.png',
+  },
+  WSOL: {
+    tagline: 'The sprinter — fast moves and sunny vibes.',
+    blurb: 'Sun-kissed speedster. Suits scalp-to-swing flow with energetic markets and fast lanes.',
+    gradient: 'from-orange-700 via-amber-600 to-yellow-500',
+    imageUrl: '/WSOL.png',
+  },
 }
 
 

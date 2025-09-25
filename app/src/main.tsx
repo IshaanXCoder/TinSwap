@@ -8,6 +8,7 @@ import SwapPage from './pages/SwapPage.tsx'
 import App from './App.tsx'
 import './index.css'
 import { AppStateProvider } from './state/appState.tsx'
+import { WalletProvider } from './context/WalletContext.tsx'
 
 const router = createBrowserRouter([
   {
@@ -25,8 +26,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <AppStateProvider>
-      <RouterProvider router={router} />
-    </AppStateProvider>
+    <WalletProvider>
+      <AppStateProvider>
+        <RouterProvider router={router} />
+      </AppStateProvider>
+    </WalletProvider>
   </React.StrictMode>,
 )

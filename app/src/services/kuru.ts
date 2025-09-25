@@ -15,7 +15,9 @@ export type KuruSwapTx = {
   value?: string
 }
 
-const BASE = (import.meta as any).env.VITE_KURU_API || 'https://api.kuru.io'
+// Default to Kuru testnet endpoint; can be overridden via VITE_KURU_API
+const BASE = (import.meta as any).env.VITE_KURU_API || 'https://api.testnet.kuru.io'
+// Kuru testnet may not require an API key. If provided, we'll forward it.
 const API_KEY = (import.meta as any).env.VITE_KURU_API_KEY
 
 function headers(): Record<string, string> {

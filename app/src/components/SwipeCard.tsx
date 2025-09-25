@@ -38,20 +38,37 @@ export function SwipeCard({
           }
         }}
         animate={controls}
-        className="h-full w-full rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/[0.04] p-6 shadow-2xl backdrop-blur-sm"
+        className="relative h-full w-full rounded-3xl p-[2px] shadow-[0_10px_50px_rgba(0,0,0,0.45)] bg-gradient-to-br from-pink-500/40 via-indigo-500/40 to-transparent"
       >
-        {/* Affirm/Reject badges */}
-        <motion.div style={{ opacity: rightOpacity }} className="pointer-events-none absolute right-6 top-6 rounded-md border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">
-          Swap →
-        </motion.div>
-        <motion.div style={{ opacity: leftOpacity }} className="pointer-events-none absolute left-6 top-6 rounded-md border border-pink-400/30 bg-pink-400/10 px-3 py-1 text-xs font-semibold text-pink-300">
-          ← Reject
-        </motion.div>
-        <div className="flex h-full flex-col">
-          <div className="flex-1 overflow-auto">
-            {children}
+        {/* Card body (glass) */}
+        <div className="relative h-full w-full rounded-3xl border border-white/10 bg-white/[0.06] p-6 backdrop-blur-md">
+          {/* Decorative glows */}
+          <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-pink-500/15 blur-2xl" />
+          <div className="pointer-events-none absolute -left-10 -bottom-10 h-44 w-44 rounded-full bg-indigo-500/15 blur-2xl" />
+
+          {/* Affirm/Reject badges */}
+          <motion.div
+            style={{ opacity: rightOpacity }}
+            className="pointer-events-none absolute right-6 top-6 rounded-full border border-emerald-400/40 bg-emerald-400/15 px-4 py-1.5 text-xs font-semibold text-emerald-300 shadow-[0_0_20px_rgba(16,185,129,0.35)]"
+          >
+            ❤️ Match →
+          </motion.div>
+          <motion.div
+            style={{ opacity: leftOpacity }}
+            className="pointer-events-none absolute left-6 top-6 rounded-full border border-rose-400/40 bg-rose-400/15 px-4 py-1.5 text-xs font-semibold text-rose-300 shadow-[0_0_20px_rgba(244,63,94,0.35)]"
+          >
+            ← Skip ❌
+          </motion.div>
+
+          {/* Content */}
+          <div className="flex h-full flex-col">
+            <div className="flex-1 overflow-auto">
+              {children}
+            </div>
+            <div className="mt-6 text-center text-[11px] text-neutral-400">
+              Swipe right to proceed to swap, left to skip
+            </div>
           </div>
-          <div className="mt-6 text-center text-xs text-neutral-400">Swipe right to proceed to swap, left to skip</div>
         </div>
       </motion.div>
     </div>
