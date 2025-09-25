@@ -1,5 +1,5 @@
 import { Quiz } from '../features/compatibility/Quiz'
-import { scoreTokens, userVectorFromAnswers, type QuizAnswer, scoreDiscreteTokens } from '../features/compatibility/data'
+import { type QuizAnswer, scoreDiscreteTokens } from '../features/compatibility/data'
 import { useAppState } from '../state/appState'
 import { useNavigate } from 'react-router-dom'
 import { SYMBOL_TO_ADDRESS } from '../features/compatibility/data'

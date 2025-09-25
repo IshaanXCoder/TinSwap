@@ -1,4 +1,4 @@
-import { BrowserProvider, Contract, JsonRpcProvider, formatUnits } from 'ethers'
+import { Contract, JsonRpcProvider, formatUnits } from 'ethers'
 import { useEffect, useMemo, useState } from 'react'
 import { ERC20ABI, UniswapV2FactoryABI, UniswapV2PairABI } from '../lib/abi'
 import { DEFAULT_RPC, MONAD_ADDRESSES } from '../lib/monad'
